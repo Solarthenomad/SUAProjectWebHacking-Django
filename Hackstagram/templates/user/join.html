@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!-- jquery 사용하기 위해 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        .floating_form {
+            margin : 0px 30px;
+        }
+
+        .floating_label {
+            margin-top: -4px;
+            font-size : 14px;
+        }
+
+        .floating_input {
+            height : 50px !important;
+            padding-top : 20px !important;
+            font-size : 14px !important;
+        }
+    </style>
+</head>
+<body style = "background-color: #FAFAFA; height: 100%">
+<div style = "font-size:15px; text-align: center; width : 100%; min-height: 100vh; display: flex; flex-direction: row; align-items: center; justify-content: center">
+    <div>
+        <div class="mb-3" style="background-color: white; width : 350px; height: 500px;border:1px solid rgba(0,0,0,0.20);">
+            <div style="display:flex; align-items: center; justify-content: center; font-size : 30px;margin-bottom: 10px ">
+                🔐Hackstagram🔐
+            </div>
+            <div style = "font-size:17px; font-weight: 600; line-height: 20px; text-align: center; color:rgba(142,142,142,1); margin:0 40px 20px ">
+                친구들의 사진과 동영상을 보고싶나요? Hackstagram에 가입하세요!
+            </div>
+            <div class="form-floating mb-2 floating_form">
+                <input type="email" class="floating_input form-control" id="floatingEmail"
+                       placeholder="name@example.com">
+                <label for="floatingEmail" class="floating_label">이메일 주소</label>
+            </div>
+            <div class="form-floating mb-2 floating_form">
+                <input type="text" class="floating_input form-control" id="floatingName" placeholder="홍길동">
+                <label for="floatingName" class="floating_label">성명</label>
+            </div>
+            <div class="form-floating mb-2 floating_form">
+                <input type="text" class="floating_input form-control" id="floatingUserId" placeholder="hong">
+                <label for="floatingUserId" class="floating_label">사용자 이름</label>
+            </div>
+            <div class="form-floating mb-3 floating_form">
+                <input type="password" class="floating_input form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword" class="floating_label">비밀번호</label>
+            </div>
+            <div class="floating_form mb-3">
+                <button id="button_join"  type="button" class="btn btn-primary" style="width: 100%"> 가입 </button>
+            </div>
+
+        </div>
+        <div style = "background-color: white; width : 350px; height: 80px; border: 1px solid rgba(0,0,0,0.20);">
+            <div style = "margin-top: 30px ">
+                계정이 이미 있으신가요?
+                <a href = "{% url 'login' %}" style="font-weight: bold; color: cornflowerblue; text-decoration: none; cursor:pointer">가입하기</a>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#button_join').on('click', ()=>{
+        console.log('클릭했다.');
+        let email = $('#floatingEmail').val();
+        let name = $('#floatingName').val();
+        let user_id = $('#floatingUserId').val();
+        let password = $('#floatingPassword').val();
+
+
+    })
+
+    $.ajax({
+        url : "/user/joing",
+        data : {
+            email : email,
+            password:password,
+            user_id : user_id,
+            name : name
+        },
+        method : "POST",
+        dataType : "json",
+        success : function(data) {
+            alert(data.message);
+            location.replace('{%url 'login' %}');
+        },
+        error : function (request, status, error) {
+            let data = JSON.parse(request.responseText);
+            console.log(data.message);
+            alert(data.message);
+
+        }
+    });
+</script>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
